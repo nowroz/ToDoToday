@@ -17,11 +17,11 @@ struct SampleTasks {
     ]
     
     private static func getTime(hour: Int, minutes: Int) -> Date {
-        var dateCommponents = DateComponents()
-        dateCommponents.hour = hour
-        dateCommponents.minute = minutes
+        var defaultComponents = Calendar.current.dateComponents([.day, .month, .year], from: .now)
+        defaultComponents.hour = hour
+        defaultComponents.minute = minutes
         
-        guard let date = Calendar.current.date(from: dateCommponents) else {
+        guard let date = Calendar.current.date(from: defaultComponents) else {
             fatalError()
         }
         
