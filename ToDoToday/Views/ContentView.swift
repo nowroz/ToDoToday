@@ -20,35 +20,43 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(tasksToDo) { taskToDo in
-                    VStack(alignment: .leading) {
-                        HStack {
-                            Text(taskToDo.title)
-                            
-                            Spacer()
-                            
-                            Divider()
-                            Text(taskToDo.time, format: .dateTime.hour().minute())
-                                .fontDesign(.monospaced)
-                        }
-                        .font(taskToDo.shouldShowDetails ? .title.weight(.semibold) : nil)
-                        
-                        if taskToDo.shouldShowDetails {
-                            VStack(alignment: .leading){
+                if tasksToDo.isEmpty {
+                    ContentUnavailableView {
+                        Label("No Tasks for Today", systemImage: "pencil.and.list.clipboard")
+                    } description: {
+                        Text("Tap the plus button to add tasks.")
+                    }
+                } else {
+                    ForEach(tasksToDo) { taskToDo in
+                        VStack(alignment: .leading) {
+                            HStack {
+                                Text(taskToDo.title)
+                                
+                                Spacer()
+                                
                                 Divider()
-                                Text(taskToDo.taskDetails)
-                                    .fixedSize(horizontal: false, vertical: true)
+                                Text(taskToDo.time, format: .dateTime.hour().minute())
+                                    .fontDesign(.monospaced)
                             }
-                            .padding(.vertical)
+                            .font(taskToDo.shouldShowDetails ? .title.weight(.semibold) : nil)
+                            
+                            if taskToDo.shouldShowDetails {
+                                VStack(alignment: .leading){
+                                    Divider()
+                                    Text(taskToDo.taskDetails)
+                                        .fixedSize(horizontal: false, vertical: true)
+                                }
+                                .padding(.vertical)
+                            }
                         }
+                        .contentShape(.rect)
+                        .onTapGesture {
+                            toggleTaskDetails(of: taskToDo)
+                        }
+                        .listRowBackground(taskToDo.shouldShowDetails ? listRowBackground() : nil)
                     }
-                    .contentShape(.rect)
-                    .onTapGesture {
-                        toggleTaskDetails(of: taskToDo)
-                    }
-                    .listRowBackground(taskToDo.shouldShowDetails ? listRowBackground() : nil)
+                    .onDelete(perform: deleteTasksToDo)
                 }
-                .onDelete(perform: deleteTasksToDo)
             }
             .navigationTitle("ToDoToday")
             .sheet(isPresented: $showingAddTaskToDoView) {
