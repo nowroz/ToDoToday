@@ -9,6 +9,7 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
     
     @Query(sort: \TaskToDo.time) private var tasksToDo: [TaskToDo]
@@ -47,16 +48,30 @@ struct ContentView: View {
                     }
                     .listRowBackground(taskToDo.shouldShowDetails ? listRowBackground() : nil)
                 }
+                .onDelete(perform: deleteTasksToDo)
             }
             .navigationTitle("ToDoToday")
             .sheet(isPresented: $showingAddTaskToDoView) {
                 AddTaskToDoView()
             }
             .toolbar {
-                Button("Add Task", systemImage: "plus") {
-                    showingAddTaskToDoView = true
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Add Task", systemImage: "plus") {
+                        showingAddTaskToDoView = true
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    EditButton()
                 }
             }
+        }
+    }
+    
+    private func deleteTasksToDo(at offsets: IndexSet) {
+        for offset in offsets {
+            let taskToDo = tasksToDo[offset]
+            modelContext.delete(taskToDo)
         }
     }
     
