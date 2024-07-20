@@ -9,6 +9,8 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.colorScheme) private var colorScheme
+    
     @Query(sort: \TaskToDo.time) private var tasksToDo: [TaskToDo]
     
     @State private var showingAddTaskToDoView: Bool = false
@@ -28,23 +30,22 @@ struct ContentView: View {
                             Text(taskToDo.time, format: .dateTime.hour().minute())
                                 .fontDesign(.monospaced)
                         }
-                        .font(taskToDo.shouldShowDetails ? .title : nil)
+                        .font(taskToDo.shouldShowDetails ? .title.weight(.semibold) : nil)
                         
                         if taskToDo.shouldShowDetails {
                             VStack(alignment: .leading){
                                 Divider()
                                 Text(taskToDo.taskDetails)
                                     .fixedSize(horizontal: false, vertical: true)
-                                    .font(.headline)
-                                    .foregroundStyle(.secondary)
                             }
+                            .padding(.vertical)
                         }
                     }
-                    .padding(taskToDo.shouldShowDetails ? 10 : 0)
                     .contentShape(.rect)
                     .onTapGesture {
                         toggleTaskDetails(of: taskToDo)
                     }
+                    .listRowBackground(taskToDo.shouldShowDetails ? listRowBackground() : nil)
                 }
             }
             .navigationTitle("ToDoToday")
@@ -68,6 +69,14 @@ struct ContentView: View {
             } else {
                 currentTaskToDo.shouldShowDetails = false
             }
+        }
+    }
+    
+    private func listRowBackground() -> Color {
+        if colorScheme == .light {
+            Color.listLightBackground
+        } else {
+            Color.listDarkBackground
         }
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE6CE7E02C4B4024001DDA24 /* Color-Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6CE7DF2C4B4023001DDA24 /* Color-Theme.swift */; };
 		CE9488602C4AA7A10082C16C /* ToDoTodayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE94885F2C4AA7A10082C16C /* ToDoTodayApp.swift */; };
 		CE9488622C4AA7A10082C16C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9488612C4AA7A10082C16C /* ContentView.swift */; };
 		CE9488642C4AA7A30082C16C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE9488632C4AA7A30082C16C /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE6CE7DF2C4B4023001DDA24 /* Color-Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Theme.swift"; sourceTree = "<group>"; };
 		CE94885C2C4AA7A10082C16C /* ToDoToday.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoToday.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE94885F2C4AA7A10082C16C /* ToDoTodayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTodayApp.swift; sourceTree = "<group>"; };
 		CE9488612C4AA7A10082C16C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				CEF6C8032C4ABA77007471E7 /* PreviewSampleData.swift */,
+				CE6CE7DF2C4B4023001DDA24 /* Color-Theme.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -175,6 +178,7 @@
 			files = (
 				CEF6C8012C4AAB7D007471E7 /* SampleTasks.swift in Sources */,
 				CEF6C8042C4ABA77007471E7 /* PreviewSampleData.swift in Sources */,
+				CE6CE7E02C4B4024001DDA24 /* Color-Theme.swift in Sources */,
 				CE9488622C4AA7A10082C16C /* ContentView.swift in Sources */,
 				CE9488702C4AA87D0082C16C /* TaskToDo.swift in Sources */,
 				CE9488602C4AA7A10082C16C /* ToDoTodayApp.swift in Sources */,
