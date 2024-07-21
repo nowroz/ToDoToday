@@ -9,11 +9,23 @@ import SwiftData
 import SwiftUI
 
 @main
-struct ToDoTodayApp: App {
+@MainActor struct ToDoTodayApp: App {
+    let modelContainer: ModelContainer = {
+        do {
+            let modelContainer = try ModelContainer(for: TaskToDo.self)
+            
+            TaskToDo.deletePreviousTasksToDo(modelContainer: modelContainer)
+            
+            return modelContainer
+        } catch {
+            fatalError("Failed to create the model container")
+        }
+    }()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(for: TaskToDo.self, isUndoEnabled: true)
+        .modelContainer(modelContainer)
     }
 }

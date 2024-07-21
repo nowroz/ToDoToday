@@ -20,3 +20,29 @@ import SwiftData
         self.taskDetails = taskDetails
     }
 }
+
+extension TaskToDo {
+    @MainActor static func deletePreviousTasksToDo(modelContainer: ModelContainer) {
+        let mainContext = modelContainer.mainContext
+        let descriptor = FetchDescriptor<TaskToDo>()
+        guard let tasksToDo = try? mainContext.fetch(descriptor) else {
+            fatalError("Failed to fetch models")
+        }
+        
+        let todayDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: .now)
+        guard let todayDay = todayDateComponents.day, let todayMonth = todayDateComponents.month, let todayYear = todayDateComponents.year else {
+            fatalError("Found one or more nil values in date components for todayDateComponents")
+        }
+        
+        for task in tasksToDo {
+            let taskDateComponents = Calendar.current.dateComponents([.day, .month, .year], from: task.time)
+            guard let taskDay = taskDateComponents.day, let taskMonth = taskDateComponents.month, let taskYear = taskDateComponents.year else {
+                fatalError("Found one or more nil values in date components for taskDateComponents")
+            }
+            
+            if taskYear != todayYear || taskMonth != todayMonth || taskDay != todayDay {
+                mainContext.delete(task)
+            }
+        }
+    }
+}

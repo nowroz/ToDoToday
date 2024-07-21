@@ -17,6 +17,8 @@ import SwiftData
             SampleTasks.content.forEach { modelContainer.mainContext.insert($0) }
         }
         
+        TaskToDo.deletePreviousTasksToDo(modelContainer: modelContainer)
+        
         return modelContainer
     } catch {
         fatalError("Failed to create the previewContainer")
