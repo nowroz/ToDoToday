@@ -9,97 +9,28 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Environment(\.colorScheme) private var colorScheme
-    
     @Query(sort: \TaskToDo.time) private var tasksToDo: [TaskToDo]
     
     @State private var showingAddTaskToDoView: Bool = false
-    @State private var showingTaskDetails: Bool = false
     
     var body: some View {
         NavigationStack {
-            List {
-                if tasksToDo.isEmpty {
-                    ContentUnavailableView {
-                        Label("No Tasks for Today", systemImage: "pencil.and.list.clipboard")
-                    } description: {
-                        Text("Tap the plus button to add tasks.")
-                    }
-                } else {
-                    ForEach(tasksToDo) { taskToDo in
-                        VStack(alignment: .leading) {
-                            HStack {
-                                Text(taskToDo.title)
-                                
-                                Spacer()
-                                
-                                Divider()
-                                Text(taskToDo.time, format: .dateTime.hour().minute())
-                                    .fontDesign(.monospaced)
-                            }
-                            .font(taskToDo.shouldShowDetails ? .title.weight(.semibold) : nil)
-                            
-                            if taskToDo.shouldShowDetails {
-                                VStack(alignment: .leading){
-                                    Divider()
-                                    Text(taskToDo.taskDetails)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
-                                .padding(.vertical)
-                            }
+            TasksToDoListViw(tasksToDo: tasksToDo)
+                .navigationTitle("ToDoToday")
+                .sheet(isPresented: $showingAddTaskToDoView) {
+                    AddTaskToDoView()
+                }
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button("Add Task", systemImage: "plus") {
+                            showingAddTaskToDoView = true
                         }
-                        .contentShape(.rect)
-                        .onTapGesture {
-                            toggleTaskDetails(of: taskToDo)
-                        }
-                        .listRowBackground(taskToDo.shouldShowDetails ? listRowBackground() : nil)
                     }
-                    .onDelete(perform: deleteTasksToDo)
-                }
-            }
-            .navigationTitle("ToDoToday")
-            .sheet(isPresented: $showingAddTaskToDoView) {
-                AddTaskToDoView()
-            }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Add Task", systemImage: "plus") {
-                        showingAddTaskToDoView = true
+                    
+                    ToolbarItem(placement: .topBarLeading) {
+                        EditButton()
                     }
                 }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    EditButton()
-                }
-            }
-        }
-    }
-    
-    private func deleteTasksToDo(at offsets: IndexSet) {
-        for offset in offsets {
-            let taskToDo = tasksToDo[offset]
-            modelContext.delete(taskToDo)
-        }
-    }
-    
-    private func toggleTaskDetails(of taskToDo: TaskToDo) {
-        for currentTaskToDo in tasksToDo {
-            if currentTaskToDo === taskToDo {
-                withAnimation {
-                    currentTaskToDo.shouldShowDetails.toggle()
-                }
-            } else {
-                currentTaskToDo.shouldShowDetails = false
-            }
-        }
-    }
-    
-    private func listRowBackground() -> Color {
-        if colorScheme == .light {
-            Color.listLightBackground
-        } else {
-            Color.listDarkBackground
         }
     }
 }
