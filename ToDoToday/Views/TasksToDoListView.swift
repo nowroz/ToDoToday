@@ -87,7 +87,7 @@ struct TasksToDoListViw: View {
 
 #Preview {
     struct TasksToDoListViewPreview: View {
-        @Query private var tasksToDo: [TaskToDo]
+        @Query(sort: \TaskToDo.time) private var tasksToDo: [TaskToDo]
         
         var body: some View {
             TasksToDoListViw(tasksToDo: tasksToDo)
