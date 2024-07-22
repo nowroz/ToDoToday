@@ -33,7 +33,7 @@ struct TasksToDoListViw: View {
                             Spacer()
                             
                             Divider()
-                            Text(taskToDo.time, format: .dateTime.hour().minute())
+                            Text(taskToDo.time, format: .dateTime.hour(.twoDigits(amPM: .abbreviated)).minute())
                                 .fontDesign(.monospaced)
                         }
                         .font(taskToDo.shouldShowDetails ? .title.weight(.semibold) : nil)
