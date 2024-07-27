@@ -9,6 +9,9 @@ import SwiftData
 import SwiftUI
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.undoManager) private var undoManager
+    
     @Query(sort: \TaskToDo.time) private var tasksToDo: [TaskToDo]
     
     @State private var showingAddTaskToDoView: Bool = false
@@ -30,6 +33,23 @@ struct ContentView: View {
                     ToolbarItem(placement: .topBarLeading) {
                         EditButton()
                     }
+                    
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Undo", systemImage: "arrow.uturn.backward") {
+                            modelContext.undoManager?.undo()
+                        }
+                        .disabled(modelContext.undoManager?.canUndo == false)
+                    }
+                    
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button("Redo", systemImage: "arrow.uturn.forward") {
+                            modelContext.undoManager?.redo()
+                        }
+                        .disabled(modelContext.undoManager?.canRedo == false)
+                    }
+                }
+                .onChange(of: undoManager, initial: true) {
+                    modelContext.undoManager = undoManager
                 }
         }
     }

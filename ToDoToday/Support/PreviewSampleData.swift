@@ -19,6 +19,8 @@ import SwiftData
         
         TaskToDo.deletePreviousTasksToDo(modelContainer: modelContainer)
         
+        modelContainer.mainContext.undoManager = UndoManager()
+        
         return modelContainer
     } catch {
         fatalError("Failed to create the previewContainer")
