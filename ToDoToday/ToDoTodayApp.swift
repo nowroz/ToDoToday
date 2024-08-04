@@ -10,6 +10,17 @@ import SwiftUI
 
 @main
 @MainActor struct ToDoTodayApp: App {
+    /// The shared modelContainer for the app.
+    ///
+    /// Everytime the app launches, ``TaskToDo/deletePreviousTasksToDo(modelContainer:)`` makes sure that  the tasks  that are dated before today are deleted from this modelContainer:
+    /// ``` swift
+    /// TaskToDo.deletePreviousTasksToDo(modelContainer: modelContainer)
+    /// ```
+    ///
+    /// Enable undo support by assigning `UndoManager`:
+    /// ```swift
+    /// modelContainer.mainContext.undoManager = UndoManager()
+    /// ```
     let modelContainer: ModelContainer = {
         do {
             let modelContainer = try ModelContainer(for: TaskToDo.self)
