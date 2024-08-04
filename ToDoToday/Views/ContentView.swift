@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.undoManager) private var undoManager
     
     @Query(sort: \TaskToDo.time) private var tasksToDo: [TaskToDo]
     
@@ -47,9 +46,6 @@ struct ContentView: View {
                         }
                         .disabled(modelContext.undoManager?.canRedo == false)
                     }
-                }
-                .onChange(of: undoManager, initial: true) {
-                    modelContext.undoManager = undoManager
                 }
         }
     }
